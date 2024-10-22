@@ -75,15 +75,6 @@ class MikrotikRest:
 
         Raises:
             RuntimeError: _description_
-            RuntimeError: _description_
-            RuntimeError: _description_
-            EnvironmentError: _description_
-            EnvironmentError: _description_
-            EnvironmentError: _description_
-            RuntimeError: _description_
-            RuntimeError: _description_
-            generalUtils.AlreadyExists: _description_
-            RuntimeError: _description_
 
         Returns:
             str: _description_
@@ -137,7 +128,8 @@ class MikrotikRest:
 
         Args:
             path (str): Base path for API call (e.g. /interface or /ip/address).
-            oid (str, optional): Object ID (can be *<hex> or unique name like ether1). Defaults to None.
+            oid (str, optional): Object ID (can be *<hex> or unique name like ether1).
+                                 Defaults to None.
             data (dict, optional): _description_. Defaults to None.
             proplist (list, optional): _description_. Defaults to None.
             query (list, optional): _description_. Defaults to None.
@@ -156,7 +148,6 @@ class MikrotikRest:
         )
 
         return data
-
 
 
 if __name__ == '__main__':

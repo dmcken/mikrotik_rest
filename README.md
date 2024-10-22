@@ -106,3 +106,46 @@ Interface:
  'tx-queue-drop': '0',
  'type': 'ether'}
 ```
+
+### Add an IP address (raw version)
+
+To get a list of available parameters that can be used in the data object go to the path and add "add" and then hit tab e.g:
+
+```bash
+/ip/address/add <tab>
+address     comment     copy-from     disabled     interface     network
+```
+
+Check the mikrotik docs for what they mean and acceptable values.
+
+```python
+result = tikh(
+    '/ip/address',
+    method='PUT',
+    data={
+        'interface': 'ether2',
+        'address': '192.168.56.24/24',
+    }
+)
+
+pprint.pprint(result)
+```
+
+Output:
+
+The created object (including its ID) is returned.
+
+```
+{'.id': '*4',
+ 'actual-interface': 'ether2',
+ 'address': '192.168.56.24/24',
+ 'disabled': 'false',
+ 'dynamic': 'false',
+ 'interface': 'ether2',
+ 'invalid': 'false',
+ 'network': '192.168.56.0',
+ 'slave': 'false'}
+```
+
+
+

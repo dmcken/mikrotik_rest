@@ -120,7 +120,9 @@ class MikrotikRest:
             auth=self._auth,
             timeout=self._timeout,
         )
-        if response.status_code not in [200]:
+        # GETs return 200 on success
+        # PUTs return 201 on success
+        if response.status_code not in [200,201]:
             raise APIError(
                 f"Got unknown status code: {response.status_code}"
             )
@@ -151,6 +153,7 @@ class MikrotikRest:
         data = self._make_request(
             http_method=method,
             url=full_url,
+            json_data=data,
         )
 
         return data
@@ -163,14 +166,22 @@ if __name__ == '__main__':
     config  = dotenv.dotenv_values()
 
     tikh = MikrotikRest(
-        config['IP'],
-        config['UN'],
-        config['PW'],
+        hostname=config['IP'],
+        username=config['UN'],
+        password=config['PW'],
     )
 
     # Get all IP addresses
-    addresses = tikh("/interface",oid='ether1')
+    result = tikh(
+        '/ip/address',
+        method='PUT',
+        data={
+            'interface': 'ether2',
+            'address': '192.168.56.24/24',
+        }
+    )
 
-    print(f"Addresses: {pprint.pformat(addresses)}")
+    pprint.pprint(result)
+
 
     print("Done")

@@ -10,7 +10,7 @@ A python handler for the Mikrotik REST API.
 ```bash
 pip install git+https://github.com/dmcken/mikrotik_rest
 
-or place the following in your requirements.txt
+# or place the following in your requirements.txt
 
 git+https://github.com/dmcken/mikrotik_rest
 ```

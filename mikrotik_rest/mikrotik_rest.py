@@ -1,4 +1,5 @@
 """Mikrotik REST API"""
+# pylint: disable=logging-fstring-interpolation
 
 # System imports
 import logging
@@ -122,12 +123,23 @@ class MikrotikRest:
         )
         # GETs return 200 on success
         # PUTs return 201 on success
-        if response.status_code not in [200,201]:
+        # DELETEs return 204 on success
+        if response.status_code not in [200,201,204]:
             raise APIError(
-                f"Got unknown status code: {response.status_code}"
+                f"Got unknown / error status code: {response.status_code}"
             )
 
-        return response.json()
+        try:
+            if http_method == 'DELETE':
+                # An empty string is returned for a successful delete
+                return_data = {'message': 'Success'}
+            else:
+                return_data = response.json()
+        except requests.exceptions.JSONDecodeError:
+            logger.error(f"Unable to parse json: '{response.text}'")
+            return_data = response.text
+
+        return return_data
 
 
     def __call__(self, path: str, method: str = 'GET', oid: str = None, data: dict = None,
@@ -171,17 +183,14 @@ if __name__ == '__main__':
         password=config['PW'],
     )
 
-    # Get all IP addresses
+    # Test code
+
     result = tikh(
         '/ip/address',
-        method='PUT',
-        data={
-            'interface': 'ether2',
-            'address': '192.168.56.24/24',
-        }
+        method='GET',
+        query={'name': 'ether1'},
+        #proplist=[]
     )
-
     pprint.pprint(result)
-
 
     print("Done")

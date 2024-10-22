@@ -39,8 +39,7 @@ import pprint
 import dotenv
 import mikrotik_rest
 
-# .env file with IP, username and password
-# in appropriate values.
+# .env file with IP/host, username and password in appropriate values.
 config  = dotenv.dotenv_values()
 
 tikh = MikrotikRest(

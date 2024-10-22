@@ -16,15 +16,12 @@ class APIError(Exception):
     """Mikrotik REST API Error"""
 
 class ConnectionClosed(Exception):
-    """Raised when connection have been closed."""
+    """Raised when connection have been closed"""
 
 class EncodingError(Exception):
-    """Raised when encoding / decoding fails."""
+    """Raised when encoding / decoding fails"""
 
 # Classes
-
-# To add: proplist, query
-
 class MikrotikRest:
     """Mikrotik REST API.
 
@@ -122,6 +119,7 @@ class MikrotikRest:
             auth=self._auth,
             timeout=self._timeout,
         )
+
         # GETs return 200 on success
         # PUTs return 201 on success
         # DELETEs return 204 on success
@@ -165,7 +163,7 @@ class MikrotikRest:
             full_url += f"/{oid}"
 
         if proplist is not None:
-            # Set the query to an empty dict if not set
+            # Set up the query parameters to an empty dict if it doesn't exist.
             if query is None:
                 query = {}
             query['.proplist'] = ",".join(proplist)

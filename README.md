@@ -156,6 +156,35 @@ Count: 1
   'type': 'loopback'}]
 ```
 
+### Limit attributes returned
+
+.id will allways be included in the output, simply list the columns you want returned.
+
+```python
+result = tikh(
+    '/interface',
+    method='GET',
+    proplist=['name','mtu','running'],
+)
+print(f"Count: {len(result)}")
+pprint.pprint(result)
+```
+Output:
+```
+Count: 11
+[{'.id': '*1', 'mtu': '9004', 'name': 'ether1', 'running': 'true'},
+ {'.id': '*2', 'mtu': '9004', 'name': 'ether2', 'running': 'false'},
+ {'.id': '*3', 'mtu': '9004', 'name': 'ether3', 'running': 'true'},
+ {'.id': '*4', 'mtu': '9004', 'name': 'ether4', 'running': 'false'},
+ {'.id': '*5', 'mtu': '9004', 'name': 'ether5', 'running': 'false'},
+ {'.id': '*6', 'mtu': '9004', 'name': 'ether6', 'running': 'false'},
+ {'.id': '*7', 'mtu': '9004', 'name': 'ether7', 'running': 'false'},
+ {'.id': '*8', 'mtu': '9004', 'name': 'ether8', 'running': 'false'},
+ {'.id': '*9', 'mtu': '9004', 'name': 'sfp-sfpplus1', 'running': 'false'},
+ {'.id': '*C', 'mtu': '65536', 'name': 'lo', 'running': 'true'},
+ {'.id': '*B', 'mtu': '9004', 'name': 'trunk', 'running': 'true'}]
+```
+
 
 ### Add an IP address (raw version)
 
@@ -269,7 +298,9 @@ result = tikh(
 
 pprint.pprint(result)
 ```
+
 Output:
+
 ```bash
 {'message': 'Success'}
 ```

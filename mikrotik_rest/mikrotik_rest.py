@@ -39,17 +39,13 @@ class MikrotikRest:
         """Constructor.
 
         Args:
-            hostname (str): _description_
-            username (str): _description_
-            password (str): _description_
-            timeout (int, optional): _description_. Defaults to 600.
-            ssl (bool, optional): _description_. Defaults to False.
-            port (int, optional): _description_. Defaults to None.
-
-        Raises:
-            RuntimeError: _description_
-            EnvironmentError: _description_
-            generalUtils.AlreadyExists: _description_
+            hostname (str): IP or DNS name of mikrotik router.
+            username (str): Username to use to login.
+            password (str): Password to use to login.
+            timeout (int, optional): API timeout. Defaults to None.
+            ssl (bool, optional): Use SSL to connect to API. Defaults to False.
+            port (int, optional): Port number to connect to API on if non-standard.
+                                  Defaults to None.
 
         Returns:
             None: no return.
@@ -97,7 +93,7 @@ class MikrotikRest:
                                         Defaults to None.
 
         Raises:
-            TikRestAPIError: API error.
+            MikrotikRestAPIError: Error raised from the API itself.
             # Possibly JSON encoding / decoding error.
 
         Returns:
@@ -117,7 +113,9 @@ class MikrotikRest:
             timeout=self._timeout,
         )
         if response.status_code not in [200]:
-            raise MikrotikRestAPIError(f"Got unknown status code: {response.status_code}")
+            raise MikrotikRestAPIError(
+                f"Got unknown status code: {response.status_code}"
+            )
 
         return response.json()
 

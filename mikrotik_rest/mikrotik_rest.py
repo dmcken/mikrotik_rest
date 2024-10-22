@@ -1,21 +1,28 @@
 """Mikrotik REST API"""
 
+# System imports
+import logging
+
+# External imports
 import requests
 
 
+logger = logging.getLogger("mikrotik_rest")
+
 # Exceptions
-class MikrotikRestAPIError(Exception):
-    """Mikrotik REST API Error.
+class APIError(Exception):
+    """Mikrotik REST API Error"""
 
-    Args:
-        Exception (_type_): _description_
+class ConnectionClosed(Exception):
+    """Raised when connection have been closed."""
 
-    Returns:
-        _type_: _description_
-    """
-
+class EncodingError(Exception):
+    """Raised when encoding / decoding fails."""
 
 # Classes
+
+# To add: proplist, query
+
 class MikrotikRest:
     """Mikrotik REST API.
 
@@ -24,6 +31,7 @@ class MikrotikRest:
 
     """
     _api = None
+    # The API doesn't respect any other value than 60 seconds.
     # https://help.mikrotik.com/docs/spaces/ROS/pages/47579162/REST+API#RESTAPI-Timeout
     _default_timeout = 60
     _ports = {
@@ -94,7 +102,7 @@ class MikrotikRest:
 
         Raises:
             MikrotikRestAPIError: Error raised from the API itself.
-            # Possibly JSON encoding / decoding error.
+            # Possibly JSON encoding / decoding error. Raise EncodingError
 
         Returns:
             list | dict: Return data (can be a list or dictionary)
@@ -113,7 +121,7 @@ class MikrotikRest:
             timeout=self._timeout,
         )
         if response.status_code not in [200]:
-            raise MikrotikRestAPIError(
+            raise APIError(
                 f"Got unknown status code: {response.status_code}"
             )
 

@@ -136,8 +136,8 @@ class MikrotikRest:
         """Call the API.
 
         Args:
-            path (str): _description_
-            oid (str, optional): _description_. Defaults to None.
+            path (str): Base path for API call (e.g. /interface or /ip/address).
+            oid (str, optional): Object ID (can be *<hex> or unique name like ether1). Defaults to None.
             data (dict, optional): _description_. Defaults to None.
             proplist (list, optional): _description_. Defaults to None.
             query (list, optional): _description_. Defaults to None.
@@ -146,9 +146,13 @@ class MikrotikRest:
             dict | list: _description_
         """
 
+        full_url = self._build_url(path)
+        if oid is not None:
+            full_url += f"/{oid}"
+
         data = self._make_request(
             http_method=method,
-            url=self._build_url(path),
+            url=full_url,
         )
 
         return data
@@ -168,7 +172,7 @@ if __name__ == '__main__':
     )
 
     # Get all IP addresses
-    addresses = tikh("/ip/address")
+    addresses = tikh("/interface",oid='ether1')
 
     print(f"Addresses: {pprint.pformat(addresses)}")
 

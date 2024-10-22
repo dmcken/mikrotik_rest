@@ -1,7 +1,7 @@
 # Mikrotik REST API handler.
 
 
-A python handler for the Mikrotik REST API.
+A python handler for the [Mikrotik REST API](https://help.mikrotik.com/docs/spaces/ROS/pages/47579162/REST+API).
 
 ## Installation
 

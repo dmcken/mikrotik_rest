@@ -107,6 +107,52 @@ Interface:
  'type': 'ether'}
 ```
 
+### Search for objects matching specific parameters
+
+These parameters are AND'ed together. So a query for interfaces named lo and mtu of 65536 would look like.
+
+At the moment these are full matches, no regex or similar support exists.
+
+As such no equivalent of `/interface> print where name ~ "ether"` exists (you are going to have to fetch everything and filter yourself).
+
+```python
+result = tikh(
+    '/interface',
+    method='GET',
+    query={'name': 'lo','mtu': '65536'},
+)
+print(f"Count: {len(result)}")
+pprint.pprint(result)
+```
+Output:
+```bash
+Count: 1
+[{'.id': '*C',
+  'actual-mtu': '65536',
+  'disabled': 'false',
+  'fp-rx-byte': '0',
+  'fp-rx-packet': '0',
+  'fp-tx-byte': '0',
+  'fp-tx-packet': '0',
+  'last-link-up-time': '2024-09-24 15:53:31',
+  'link-downs': '0',
+  'mac-address': '00:00:00:00:00:00',
+  'mtu': '65536',
+  'name': 'lo',
+  'running': 'true',
+  'rx-byte': '13851160',
+  'rx-drop': '0',
+  'rx-error': '0',
+  'rx-packet': '80530',
+  'tx-byte': '13851160',
+  'tx-drop': '0',
+  'tx-error': '0',
+  'tx-packet': '80530',
+  'tx-queue-drop': '0',
+  'type': 'loopback'}]
+```
+
+
 ### Add an IP address (raw version)
 
 To get a list of available parameters that can be used in the data object go to the path and add "add" and then hit tab e.g:
@@ -145,6 +191,32 @@ The created object (including its ID) is returned.
  'invalid': 'false',
  'network': '192.168.56.0',
  'slave': 'false'}
+```
+
+### Fetch only specific properties
+```python
+result = tikh(
+    '/interface',
+    method='GET',
+    proplist=['name','mtu','running'],
+)
+print(f"Count: {len(result)}")
+pprint.pprint(result)
+```
+Output:
+```
+Count: 11
+[{'.id': '*1', 'mtu': '9004', 'name': 'ether1', 'running': 'true'},
+ {'.id': '*2', 'mtu': '9004', 'name': 'ether2', 'running': 'false'},
+ {'.id': '*3', 'mtu': '9004', 'name': 'ether3', 'running': 'true'},
+ {'.id': '*4', 'mtu': '9004', 'name': 'ether4', 'running': 'false'},
+ {'.id': '*5', 'mtu': '9004', 'name': 'ether5', 'running': 'false'},
+ {'.id': '*6', 'mtu': '9004', 'name': 'ether6', 'running': 'false'},
+ {'.id': '*7', 'mtu': '9004', 'name': 'ether7', 'running': 'false'},
+ {'.id': '*8', 'mtu': '9004', 'name': 'ether8', 'running': 'false'},
+ {'.id': '*9', 'mtu': '9004', 'name': 'sfp-sfpplus1', 'running': 'false'},
+ {'.id': '*C', 'mtu': '65536', 'name': 'lo', 'running': 'true'},
+ {'.id': '*B', 'mtu': '9004', 'name': 'trunk', 'running': 'true'}]
 ```
 
 ### Set attributes on an object

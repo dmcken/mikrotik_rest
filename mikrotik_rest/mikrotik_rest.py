@@ -3,6 +3,7 @@
 
 # System imports
 import logging
+import urllib.parse
 
 # External imports
 import requests
@@ -124,6 +125,7 @@ class MikrotikRest:
         # GETs return 200 on success
         # PUTs return 201 on success
         # DELETEs return 204 on success
+        # Need to handle failures.
         if response.status_code not in [200,201,204]:
             raise APIError(
                 f"Got unknown / error status code: {response.status_code}"
@@ -162,6 +164,17 @@ class MikrotikRest:
         if oid is not None:
             full_url += f"/{oid}"
 
+        if proplist is not None:
+            # Set the query to an empty dict if not set
+            if query is None:
+                query = {}
+            query['.proplist'] = ",".join(proplist)
+
+        if query is not None:
+            full_url += f"?{urllib.parse.urlencode(query)}"
+
+        logger.error(f"URL: {full_url}")
+
         data = self._make_request(
             http_method=method,
             url=full_url,
@@ -186,11 +199,12 @@ if __name__ == '__main__':
     # Test code
 
     result = tikh(
-        '/ip/address',
+        '/interface',
         method='GET',
-        query={'name': 'ether1'},
-        #proplist=[]
+        # query={'name': 'lo','mtu': '65536'},
+        proplist=['name','mtu','running'],
     )
+    print(f"Count: {len(result)}")
     pprint.pprint(result)
 
     print("Done")

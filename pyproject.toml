@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "mikrotik_rest/__init__.py"
+
+[project]
+name="mikrotik_rest"
+dynamic=["version"]
+authors = [
+  { name="David Mc Ken", email="david.mcken@codepro.guru" },
+]
+description="Mikrotik REST API handler"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+]
+dependencies = [
+    "python-dotenv",
+    "requests",
+]
+
+[project.urls]
+Homepage = "https://github.com/dmcken/mikrotik_rest"
+Issues = "https://github.com/dmcken/mikrotik_rest/issues"
